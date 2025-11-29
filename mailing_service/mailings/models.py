@@ -36,9 +36,22 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(Recipient)
     owner = models.ForeignKey('userapp.User', on_delete=models.CASCADE) # владелец рассылки
 
-
     def __str__(self):
         return f'Рассылка {self.id}'
+
+    def total_attempts(self):
+        return self.attempt_set.count()
+
+    def successful_attempts(self):
+        return self.attempt_set.filter(status='success').count()
+
+    def failed_attempts(self):
+        return self.attempt_set.filter(status='error').count()
+
+    def messages_sent(self):
+        return self.successful_attempts() # 1 попытка = 1 письмо
+
+
 
 class Attempt(models.Model):
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
