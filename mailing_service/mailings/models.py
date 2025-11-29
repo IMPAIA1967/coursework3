@@ -5,6 +5,7 @@ class Recipient(models.Model):
     email = models.EmailField(unique=True) # уникальный e-mail
     full_name = models.CharField(max_length=200) # Ф.И.О.
     comment = models.TextField(blank=True, null=True) # необязательный комментарий
+    owner = models.ForeignKey('userapp.User', on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -17,7 +18,7 @@ class Message(models.Model):
     def __str__(self):
         return self.subject
 
-class Mailings(models.Model):
+class Mailing(models.Model):
     STATUS_CHOICES = [
         ('Создана', 'Создана'),
         ('Запущена', 'Запущена'),
@@ -38,7 +39,7 @@ class Mailings(models.Model):
         return f'Рассылка {self.id}'
 
 class Attempt(models.Model):
-    mailings = models.ForeignKey(Mailings, on_delete=models.CASCADE)
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
     attempt_time = models.DateTimeField(auto_now_add=True) # auto_now_add-автоматически фиксируем время попытки
     status = models.CharField(max_length=12,
                               choices=[('success', 'Успешно'), # в базу и админку

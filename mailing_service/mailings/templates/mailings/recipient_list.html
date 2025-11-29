@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список получателей</title>
+</head>
+<body>
+    <h1>Мои получатели</h1>
+    <a href="{% url 'mailings:recipient_create' %}">+ Добавить получателя</a>
+    <ul>
+        {% for recipient in recipients %}
+            <li>
+                {{ recipient.full_name }} ({{ recipient.email }})
+                <a href="{% url 'mailings:recipient_update' recipient.pk %}">Редактировать</a>
+                <a href="{% url 'mailings:recipient_delete' recipient.pk %}">Удалить</a>
+            </li>
+        {% empty %}
+            <li>Получателей пока нет.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

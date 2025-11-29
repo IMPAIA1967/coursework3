@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Удалить получателя</title>
+</head>
+<body>
+    <h1>Удалить получателя?</h1>
+    <p>{{ recipient.full_name }} ({{ recipient.email }})</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+        <a href="{% url 'mailings:recipient_list' %}">Отмена</a>
+    </form>
+</body>
+</html>
