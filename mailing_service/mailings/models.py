@@ -12,8 +12,10 @@ class Recipient(models.Model):
         return self.email
 
 class Message(models.Model):
+    objects = None
     subject = models.CharField(max_length=200) # тема письма
     body = models.TextField() # тело письма
+    owner = models.ForeignKey('userapp.User', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.subject
@@ -31,7 +33,7 @@ class Mailing(models.Model):
                               choices=STATUS_CHOICES,
                               default='Создана')
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    recipient = models.ManyToManyField(Recipient)
+    recipients = models.ManyToManyField(Recipient)
     owner = models.ForeignKey('userapp.User', on_delete=models.CASCADE) # владелец рассылки
 
 

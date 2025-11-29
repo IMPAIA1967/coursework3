@@ -1,0 +1,21 @@
+{% extends 'mailings/base.html' %}
+
+{% block title %}Удалить рассылку{% endblock %}
+
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">Удалить рассылку?</h4>
+            <p class="mb-4">
+                Сообщение: <strong>{{ mailing.message.subject }}</strong><br>
+                Статус: <span class="badge bg-info">{{ mailing.status }}</span><br>
+                Получателей: <span class="badge bg-secondary">{{ mailing.recipients.count }}</span>
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Удалить</button>
+                <a href="{% url 'mailings:mailing_list' %}" class="btn btn-outline-secondary ms-2">Отмена</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

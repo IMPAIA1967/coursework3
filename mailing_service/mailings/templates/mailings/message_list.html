@@ -1,0 +1,31 @@
+{% extends 'mailings/base.html' %}
+
+{% block title %}Мои сообщения{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3">Мои сообщения</h1>
+        <a href="{% url 'mailings:message_create' %}" class="btn btn-success">+ Новое сообщение</a>
+    </div>
+
+    {% if messages %}
+        <div class="row g-3">
+            {% for message in messages %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ message.subject }}</h5>
+                            <p class="card-text text-muted">{{ message.body|truncatewords:12 }}</p>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'mailings:message_update' message.pk %}" class="btn btn-outline-primary">Редактировать</a>
+                                <a href="{% url 'mailings:message_delete' message.pk %}" class="btn btn-outline-danger">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">Сообщений пока нет. <a href="{% url 'mailings:message_create' %}" class="alert-link">Создать первое</a></div>
+    {% endif %}
+{% endblock %}

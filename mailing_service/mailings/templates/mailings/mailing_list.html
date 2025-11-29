@@ -1,0 +1,42 @@
+{% extends 'mailings/base.html' %}
+
+{% block title %}Мои рассылки{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3">Мои рассылки</h1>
+        <a href="{% url 'mailings:mailing_create' %}" class="btn btn-success">+ Новая рассылка</a>
+    </div>
+
+    {% if mailings %}
+        <div class="row g-3">
+            {% for mailing in mailings %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ mailing.message.subject }}</h5>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    Статус: <span class="badge bg-info">{{ mailing.status }}</span><br>
+                                    С {{ mailing.start_time|date:"d.m.Y H:i" }} по {{ mailing.end_time|date:"d.m.Y H:i" }}
+                                </small>
+                            </p>
+                            <p class="card-text">Получателей: <span class="badge bg-secondary">{{ mailing.recipients.count }}</span></p>
+                            <div class="btn-group btn-group-sm mt-2">
+                                <a href="{% url 'mailings:mailing_update' mailing.pk %}" class="btn btn-outline-primary">Редактировать</a>
+                                <a href="{% url 'mailings:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
+                                <a href="{% url 'mailings:mailing_send' mailing.pk %}" class="btn btn-outline-success">Отправить</a>
+                            </div>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'mailings:mailing_update' mailing.pk %}" class="btn btn-outline-primary">Редактировать</a>
+                                <a href="{% url 'mailings:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">Рассылок пока нет. <a href="{% url 'mailings:mailing_create' %}" class="alert-link">Создать первую</a></div>
+    {% endif %}
+{% endblock %}
