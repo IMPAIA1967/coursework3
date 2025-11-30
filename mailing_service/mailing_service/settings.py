@@ -1,16 +1,18 @@
+import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-3&ootodq#7n=32l5)3f!@%opsfzw!ovp)f1f1emy+u0!db=1o5"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
-
+load_dotenv()
 
 
 INSTALLED_APPS = [
@@ -99,7 +101,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'userapp.User' # использует мою модель, а не стандартную
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # вывод в консоль
-DEFAULT_FROM_EMAIL = 'dima.soin2014@yandex.ru'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 #кеширование
 CACHES = {
