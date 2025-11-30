@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}
+      Редактировать
+      {% else %}
+      Добавить
+      {% endif %}
+      получателя</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}
+      Редактировать
+      {% else %}
+      Добавить
+      {% endif %}
+      получателя</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+        <a href="{% url 'mailings:recipient_list' %}">Отмена</a>
+    </form>
+</body>
+</html>

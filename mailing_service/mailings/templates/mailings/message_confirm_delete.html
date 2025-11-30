@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Удалить сообщение</title>
+</head>
+<body>
+    <h1>Удалить сообщение?</h1>
+    <p><strong>{{ message.subject }}</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+        <a href="{% url 'mailings:message_list' %}">Отмена</a>
+    </form>
+</body>
+</html>
