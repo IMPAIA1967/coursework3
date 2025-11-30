@@ -100,3 +100,11 @@ AUTH_USER_MODEL = 'userapp.User' # использует мою модель, а 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # вывод в консоль
 DEFAULT_FROM_EMAIL = 'dima.soin2014@yandex.ru'
+
+#кеширование
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache', # локальная память (RAM) для кеша
+        'LOCATION': 'unique-snowflake',
+    }
+}

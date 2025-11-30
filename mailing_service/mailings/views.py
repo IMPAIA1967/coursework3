@@ -5,21 +5,26 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import Template, Context
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page, cache_control
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Recipient, Message, Mailing, Attempt
 
 
+@cache_control(max_age=300)
+@cache_page(300)
 def index(request):
     user = request.user
     total = Mailing.objects.filter(owner=user).count()
     active = Mailing.objects.filter(owner=user, status='Запущена').count()
     unique_clients = Recipient.objects.filter(owner=user).distinct().count()
-    return render(request, 'mailings/index.html', {
+    context = {
         'total': total,
         'active': active,
         'unique_clients': unique_clients,
-    })
+    }
+    return render(request, 'mailings/index.html', context)
 
 class RecipientListView(LoginRequiredMixin, ListView):
     model = Recipient
@@ -108,6 +113,7 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
         return Message.objects.filter(owner=self.request.user)
 
 
+@method_decorator(cache_page(300), name='dispatch')
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = 'mailings/mailing_list.html'

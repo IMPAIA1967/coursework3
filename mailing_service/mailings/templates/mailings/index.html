@@ -1,8 +1,11 @@
 {% extends 'mailings/base.html' %}
+{% load cache %}
 {% block title %}Главная{% endblock %}
 {% block content %}
     <div class="container my-5">
         <h1 class="display-5 text-center mb-4">Сервис управления рассылками</h1>
+
+        {% cache 300 index_page user.id %}
         <div class="row g-4 text-center">
             <div class="col-md-4">
                 <div class="card shadow-sm border-primary">
@@ -40,5 +43,6 @@
                 <a href="{% url 'mailings:mailing_list' %}" class="btn btn-outline-success w-100">📨 Рассылки</a>
             </div>
         </div>
+         {% endcache %}
     </div>
 {% endblock %}
