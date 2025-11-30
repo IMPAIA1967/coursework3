@@ -49,7 +49,11 @@ class RecipientDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         # Удалять можно только своих получателей
-        return Recipient.objects.filter(owner=self.request.user)
+        def get_queryset(self):
+            user = self.request.user
+            if user.groups.filter(name='Менеджеры').exists():
+                return Recipient.objects.all()  # Менеджер — видит ВСЕХ получателей
+            return Recipient.objects.filter(owner=user)  # Обычный — только своих
 
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
@@ -57,7 +61,10 @@ class MessageListView(LoginRequiredMixin, ListView):
     context_object_name = 'messages'
 
     def get_queryset(self):
-        return Message.objects.filter(owner=self.request.user)
+        user = self.request.user
+        if user.groups.filter(name='Менеджеры').exists():
+            return Message.objects.all()  # Менеджер — видит ВСЕ сообщения
+        return Message.objects.filter(owner=user)  # Обычный — только свои
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
@@ -96,7 +103,10 @@ class MailingListView(LoginRequiredMixin, ListView):
     context_object_name = 'mailings'
 
     def get_queryset(self):
-        return Mailing.objects.filter(owner=self.request.user)
+        user = self.request.user
+        if user.groups.filter(name='Менеджеры').exists():
+            return Mailing.objects.all()  # Менеджер — видит ВСЕ рассылки
+        return Mailing.objects.filter(owner=user)  # Обычный — только свои
 
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
