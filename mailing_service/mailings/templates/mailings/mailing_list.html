@@ -24,14 +24,16 @@
                             <p class="card-text">Получателей: <span class="badge bg-secondary">{{ mailing.recipients.count }}</span></p>
                             <p class="card-text">
                                 <small>
-                                        Отправлено: <span class="badge bg-success">{{ mailing.messages_sent }}</span> |
-                                        Ошибок: <span class="badge bg-danger">{{ mailing.failed_attempts }}</span> |
-                                        Всего попыток: <span class="badge bg-secondary">{{ mailing.total_attempts }}</span>
+                                    Отправлено: <span class="badge bg-success">{{ mailing.messages_sent }}</span> |
+                                    Ошибок: <span class="badge bg-danger">{{ mailing.failed_attempts }}</span> |
+                                    Всего попыток: <span class="badge bg-secondary">{{ mailing.total_attempts }}</span>
                                 </small>
                             </p>
                             <div class="btn-group btn-group-sm mt-2">
-                                <a href="{% url 'mailings:mailing_update' mailing.pk %}" class="btn btn-outline-primary">Редактировать</a>
-                                <a href="{% url 'mailings:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
+                                {% if mailing.owner == user or user.is_superuser %}
+                                    <a href="{% url 'mailings:mailing_update' mailing.pk %}" class="btn btn-outline-primary">Редактировать</a>
+                                    <a href="{% url 'mailings:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
+                                {% endif %}
                                 <a href="{% url 'mailings:mailing_send' mailing.pk %}" class="btn btn-outline-success">Отправить</a>
                             </div>
                         </div>

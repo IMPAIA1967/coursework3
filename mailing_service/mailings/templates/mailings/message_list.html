@@ -17,8 +17,10 @@
                             <h5 class="card-title">{{ message.subject }}</h5>
                             <p class="card-text text-muted">{{ message.body|truncatewords:12 }}</p>
                             <div class="btn-group btn-group-sm">
-                                <a href="{% url 'mailings:message_update' message.pk %}" class="btn btn-outline-primary">Редактировать</a>
-                                <a href="{% url 'mailings:message_delete' message.pk %}" class="btn btn-outline-danger">Удалить</a>
+                                {% if message.owner == user or user.is_superuser %}
+                                    <a href="{% url 'mailings:message_update' message.pk %}" class="btn btn-outline-primary">Редактировать</a>
+                                    <a href="{% url 'mailings:message_delete' message.pk %}" class="btn btn-outline-danger">Удалить</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

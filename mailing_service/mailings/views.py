@@ -2,13 +2,24 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import Template, Context
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Recipient, Message, Mailing, Attempt
 
+
+def index(request):
+    user = request.user
+    total = Mailing.objects.filter(owner=user).count()
+    active = Mailing.objects.filter(owner=user, status='Запущена').count()
+    unique_clients = Recipient.objects.filter(owner=user).distinct().count()
+    return render(request, 'mailings/index.html', {
+        'total': total,
+        'active': active,
+        'unique_clients': unique_clients,
+    })
 
 class RecipientListView(LoginRequiredMixin, ListView):
     model = Recipient
